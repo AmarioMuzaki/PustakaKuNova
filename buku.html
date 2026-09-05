@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Buku | PustakaKU Nova</title>
+    <link rel="stylesheet" href="css/app.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="side">
+        <b>📚 PustakaKU Nova</b>
+        <nav></nav>
+        <button onclick="out()">Keluar</button>
+      </aside>
+      <main class="main">
+        <div class="top">
+          <div>
+            <small>15 koleksi demo</small>
+            <h1>Koleksi Buku</h1>
+          </div>
+          <div class="avatar">A</div>
+        </div>
+        <div class="toolbar">
+          <input
+            id="q"
+            placeholder="🔎 Cari judul, penulis, kategori, ISBN..."
+            oninput="render()"
+          /><button class="action" onclick="add()">+ Tambah</button>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Judul</th>
+              <th>Penulis</th>
+              <th>Kategori</th>
+              <th>Tahun</th>
+              <th>Rating</th>
+              <th>Stok</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="list"></tbody>
+        </table>
+      </main>
+    </div>
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+      function render() {
+        let x = q.value.toLowerCase();
+        list.innerHTML = books
+          .filter((b) =>
+            (b.title + b.author + b.cat + b.isbn + b.publisher)
+              .toLowerCase()
+              .includes(x),
+          )
+          .map(
+            (b) =>
+              `<tr><td><b>${b.title}</b></td><td>${b.author}</td><td>${b.cat}</td><td>${b.year}</td><td>⭐ ${b.rating}</td><td>${b.stock}</td><td><button class="action" onclick="del(${b.id})">Hapus</button></td></tr>`,
+          )
+          .join("");
+      }
+      function add() {
+        let t = prompt("Judul buku");
+        if (t) {
+          books.push({
+            id: Date.now(),
+            title: t,
+            author: "Penulis Baru",
+            cat: "Umum",
+            publisher: "PustakaKU",
+            year: 2026,
+            isbn: "-",
+            stock: 1,
+            rating: 5,
+          });
+          save();
+          render();
+        }
+      }
+      function del(id) {
+        let i = books.findIndex((b) => b.id === id);
+        if (i >= 0 && confirm("Hapus buku?")) {
+          books.splice(i, 1);
+          save();
+          render();
+        }
+      }
+      render();
+    </script>
+  </body>
+</html>

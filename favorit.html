@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Favorit | PustakaKU Nova</title>
+    <link rel="stylesheet" href="css/app.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="side">
+        <b>📚 PustakaKU Nova</b>
+        <nav></nav>
+        <button onclick="out()">Keluar</button>
+      </aside>
+      <main class="main">
+        <div class="top">
+          <div>
+            <small>Koleksi pilihanmu</small>
+            <h1>Favorit</h1>
+          </div>
+          <div class="avatar">A</div>
+        </div>
+        <div class="books" id="favoriteList"></div>
+      </main>
+    </div>
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+      function renderFavorites() {
+        var list = document.getElementById("favoriteList");
+        var favoriteBooks = books.filter(function (book) {
+          return favorites.some(function (id) {
+            return Number(id) === Number(book.id);
+          });
+        });
+        if (!favoriteBooks.length) {
+          list.innerHTML =
+            '<div class="panel"><h2>Belum ada buku favorit</h2><p>Tambahkan buku ke favorit dari halaman Koleksi.</p></div>';
+          return;
+        }
+        list.innerHTML = favoriteBooks
+          .map(function (book) {
+            return (
+              '<div class="bookbox"><div class="cover">📖</div><h3>' +
+              book.title +
+              "</h3><p>" +
+              book.author +
+              "</p><p>⭐ " +
+              (book.rating || 0) +
+              " · Stok " +
+              book.stock +
+              '</p><button class="action" onclick="removeFav(' +
+              book.id +
+              ')">Hapus Favorit</button></div>'
+            );
+          })
+          .join("");
+      }
+      function removeFav(id) {
+        favorites = favorites.filter(function (item) {
+          return Number(item) !== Number(id);
+        });
+        save();
+        renderFavorites();
+      }
+      document.addEventListener("DOMContentLoaded", renderFavorites);
+    </script>
+  </body>
+</html>

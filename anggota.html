@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Anggota | PustakaKU Nova</title>
+    <link rel="stylesheet" href="css/app.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="side">
+        <b>📚 PustakaKU Nova</b>
+        <nav></nav>
+        <button onclick="out()">Keluar</button>
+      </aside>
+      <main class="main">
+        <div class="top">
+          <div>
+            <small>Manajemen pengguna</small>
+            <h1>Anggota</h1>
+          </div>
+          <div class="avatar">A</div>
+        </div>
+        <div class="toolbar">
+          <input
+            id="q"
+            placeholder="🔎 Cari nama, kelas, atau email..."
+            oninput="render()"
+          /><button class="action" onclick="addMember()">
+            + Tambah Anggota
+          </button>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Nama</th>
+              <th>Kelas</th>
+              <th>Email</th>
+              <th>Status</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="list"></tbody>
+        </table>
+      </main>
+    </div>
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+      function render() {
+        let x = q.value.toLowerCase();
+        list.innerHTML = members
+          .filter((m) => (m.name + m.kelas + m.email).toLowerCase().includes(x))
+          .map(
+            (m, i) =>
+              `<tr><td>${m.name}</td><td>${m.kelas}</td><td>${m.email}</td><td>${m.status}</td><td><button class="action" onclick="removeMember(${i})">Hapus</button></td></tr>`,
+          )
+          .join("");
+      }
+      function addMember() {
+        let name = prompt("Nama anggota");
+        if (!name) return;
+        let kelas = prompt("Kelas", "XI RPL 1") || "Umum";
+        members.push({
+          name,
+          kelas,
+          email: name.toLowerCase().replaceAll(" ", "_") + "@pustakaku.local",
+          status: "Aktif",
+        });
+        save();
+        render();
+      }
+      function removeMember(i) {
+        if (confirm("Hapus anggota ini?")) {
+          members.splice(i, 1);
+          save();
+          render();
+        }
+      }
+      render();
+    </script>
+  </body>
+</html>

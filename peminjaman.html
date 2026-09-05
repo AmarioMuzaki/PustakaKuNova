@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Peminjaman | PustakaKU Nova</title>
+    <link rel="stylesheet" href="css/app.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="side">
+        <b>📚 PustakaKU Nova</b>
+        <nav></nav>
+        <button onclick="out()">Keluar</button>
+      </aside>
+      <main class="main">
+        <div class="top">
+          <div>
+            <small>Transaksi perpustakaan</small>
+            <h1>Peminjaman</h1>
+          </div>
+          <div class="avatar">A</div>
+        </div>
+        <div class="toolbar">
+          <button class="action" onclick="newLoan()">+ Peminjaman Baru</button>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Anggota</th>
+              <th>Buku</th>
+              <th>Pinjam</th>
+              <th>Jatuh Tempo</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="list"></tbody>
+        </table>
+      </main>
+    </div>
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+      function render() {
+        list.innerHTML = loans
+          .map(
+            (l) =>
+              `<tr><td>${l.member}</td><td>${l.book}</td><td>${l.borrow}</td><td>${l.due}</td><td>${l.status}</td></tr>`,
+          )
+          .join("");
+      }
+      function newLoan() {
+        let member = prompt("Nama anggota");
+        if (!member) return;
+        let book = prompt("Judul buku");
+        if (!book) return;
+        let b = bookById(
+          books.find((x) => x.title.toLowerCase() == book.toLowerCase())?.id,
+        );
+        if (!b || b.stock < 1) {
+          alert("Buku tidak ditemukan atau stok habis.");
+          return;
+        }
+        let d = new Date();
+        let due = new Date(d);
+        due.setDate(d.getDate() + 14);
+        loans.push({
+          id: Date.now(),
+          member,
+          book: b.title,
+          borrow: d.toISOString().slice(0, 10),
+          due: due.toISOString().slice(0, 10),
+          status: "Menunggu",
+        });
+        b.stock--;
+        save();
+        render();
+        alert("Peminjaman berhasil ditambahkan.");
+      }
+      render();
+    </script>
+  </body>
+</html>

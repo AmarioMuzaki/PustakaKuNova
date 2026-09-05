@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Pengembalian | PustakaKU Nova</title>
+    <link rel="stylesheet" href="css/app.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="side">
+        <b>📚 PustakaKU Nova</b>
+        <nav></nav>
+        <button onclick="out()">Keluar</button>
+      </aside>
+      <main class="main">
+        <div class="top">
+          <div>
+            <small>Update transaksi</small>
+            <h1>Pengembalian</h1>
+          </div>
+          <div class="avatar">A</div>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Anggota</th>
+              <th>Buku</th>
+              <th>Jatuh Tempo</th>
+              <th>Status</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="list"></tbody>
+        </table>
+      </main>
+    </div>
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+      function render() {
+        list.innerHTML = loans
+          .filter((l) => l.status !== "Dikembalikan")
+          .map(
+            (l) =>
+              `<tr><td>${l.member}</td><td>${l.book}</td><td>${l.due}</td><td>${l.status}</td><td><button class="action" onclick="ret(${l.id})">Kembalikan</button></td></tr>`,
+          )
+          .join("");
+      }
+      function ret(id) {
+        let l = loans.find((x) => x.id == id);
+        if (!l) return;
+        l.status = "Dikembalikan";
+        let b = books.find((x) => x.title === l.book);
+        if (b) b.stock++;
+        let today = new Date();
+        let due = new Date(l.due);
+        let days = Math.max(0, Math.ceil((today - due) / 86400000));
+        if (days)
+          fines.push({
+            id: Date.now(),
+            member: l.member,
+            book: l.book,
+            days,
+            total: days * 1000,
+            status: "Belum Dibayar",
+          });
+        save();
+        render();
+        alert(
+          days
+            ? "Terlambat " + days + " hari. Denda " + rupiah(days * 1000)
+            : "Buku berhasil dikembalikan.",
+        );
+      }
+      render();
+    </script>
+  </body>
+</html>

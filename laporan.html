@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Laporan | PustakaKU Nova</title>
+    <link rel="stylesheet" href="css/app.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="side">
+        <b>📚 PustakaKU Nova</b>
+        <nav></nav>
+        <button onclick="out()">Keluar</button>
+      </aside>
+      <main class="main">
+        <div class="top">
+          <div>
+            <small>Ringkasan perpustakaan</small>
+            <h1>Laporan & Statistik</h1>
+          </div>
+          <div class="avatar">A</div>
+        </div>
+        <div class="cards">
+          <div class="card">Jumlah Buku<b id="bc">0</b></div>
+          <div class="card">Anggota<b id="mc">0</b></div>
+          <div class="card">Transaksi<b id="lc">0</b></div>
+          <div class="card">Total Denda<b id="fc">Rp0</b></div>
+        </div>
+        <div class="panel">
+          <h2>Buku Populer</h2>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Judul</th>
+                <th>Penulis</th>
+                <th>Rating</th>
+                <th>Stok</th>
+              </tr>
+            </thead>
+            <tbody id="popularList"></tbody>
+          </table>
+        </div>
+        <div class="panel">
+          <h2>Ringkasan Status Peminjaman</h2>
+          <div class="cards" id="statusCards"></div>
+        </div>
+      </main>
+    </div>
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("bc").textContent = books.length;
+        document.getElementById("mc").textContent = members.length;
+        document.getElementById("lc").textContent = loans.length;
+        document.getElementById("fc").textContent = rupiah(
+          fines.reduce(function (total, f) {
+            return total + Number(f.total || 0);
+          }, 0),
+        );
+
+        var popular = books
+          .slice()
+          .sort(function (a, b) {
+            return Number(b.rating || 0) - Number(a.rating || 0);
+          })
+          .slice(0, 8);
+        document.getElementById("popularList").innerHTML = popular
+          .map(function (book, i) {
+            return (
+              "<tr><td>#" +
+              (i + 1) +
+              "</td><td>" +
+              book.title +
+              "</td><td>" +
+              book.author +
+              "</td><td>⭐ " +
+              (book.rating || 0) +
+              "</td><td>" +
+              book.stock +
+              "</td></tr>"
+            );
+          })
+          .join("");
+
+        var statuses = ["Dipinjam", "Terlambat", "Menunggu", "Dikembalikan"];
+        document.getElementById("statusCards").innerHTML = statuses
+          .map(function (status) {
+            var count = loans.filter(function (loan) {
+              return loan.status === status;
+            }).length;
+            return '<div class="card">' + status + "<b>" + count + "</b></div>";
+          })
+          .join("");
+      });
+    </script>
+  </body>
+</html>

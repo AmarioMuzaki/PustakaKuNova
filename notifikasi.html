@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Notifikasi | PustakaKU Nova</title>
+    <link rel="stylesheet" href="css/app.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="side">
+        <b>📚 PustakaKU Nova</b>
+        <nav></nav>
+        <button onclick="out()">Keluar</button>
+      </aside>
+      <main class="main">
+        <div class="top">
+          <div>
+            <small>Informasi terbaru</small>
+            <h1>Notifikasi</h1>
+          </div>
+          <div class="avatar">A</div>
+        </div>
+        <div id="list"></div>
+      </main>
+    </div>
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+      list.innerHTML = notifications
+        .map(
+          (n) =>
+            `<div class="panel" style="margin-bottom:12px"><b>${n.type === "warning" ? "⚠️" : n.type === "success" ? "✅" : "🔔"} ${n.text}</b><p>${n.time}</p></div>`,
+        )
+        .join("");
+    </script>
+  </body>
+</html>

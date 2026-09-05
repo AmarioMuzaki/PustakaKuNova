@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Profil | PustakaKU Nova</title>
+    <link rel="stylesheet" href="css/app.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="side">
+        <b>📚 PustakaKU Nova</b>
+        <nav></nav>
+        <button onclick="out()">Keluar</button>
+      </aside>
+      <main class="main">
+        <div class="top">
+          <div>
+            <small>Akun pengguna</small>
+            <h1>Profil</h1>
+          </div>
+          <div class="avatar">A</div>
+        </div>
+        <div class="panel">
+          <h2 id="name"></h2>
+          <p>Username: <b id="user"></b></p>
+          <p>Role: <b id="role"></b></p>
+          <p>Anggota perpustakaan digital PustakaKU Nova.</p>
+        </div>
+      </main>
+    </div>
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+      let u = me();
+      name.textContent = u.username;
+      user.textContent = u.username;
+      role.textContent = u.role;
+    </script>
+  </body>
+</html>

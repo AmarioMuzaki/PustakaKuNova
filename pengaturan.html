@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Pengaturan | PustakaKU Nova</title>
+    <link rel="stylesheet" href="css/app.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="side">
+        <b>📚 PustakaKU Nova</b>
+        <nav></nav>
+        <button onclick="out()">Keluar</button>
+      </aside>
+      <main class="main">
+        <div class="top">
+          <div>
+            <small>Preferensi aplikasi</small>
+            <h1>Pengaturan</h1>
+          </div>
+          <div class="avatar">A</div>
+        </div>
+        <div class="panel">
+          <h2>Pengaturan Demo</h2>
+          <p>
+            <label
+              ><input type="checkbox" checked /> Aktifkan pengingat jatuh
+              tempo</label
+            >
+          </p>
+          <p>
+            <label
+              ><input type="checkbox" checked /> Tampilkan notifikasi</label
+            >
+          </p>
+          <p>
+            <label
+              >Durasi peminjaman:
+              <select>
+                <option>14 hari</option>
+                <option>7 hari</option>
+                <option>21 hari</option>
+              </select></label
+            >
+          </p>
+          <button class="action" onclick="alert('Pengaturan tersimpan.')">
+            Simpan Pengaturan
+          </button>
+        </div>
+      </main>
+    </div>
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
